@@ -22,6 +22,18 @@ func Hello(name string, language string) string {
 	return prefix + name
 }
 
+func greetingPrefix(language string) (prefix string) {
+	switch language {
+	case "French":
+		prefix = frenchHelloPrefix
+	case "Spanish":
+		prefix = spanishHelloPrefix
+	default:
+		prefix = englishHelloPrefix
+	}
+	return
+}
+
 func main() {
 	fmt.Println(Hello("world", ""))
 }
