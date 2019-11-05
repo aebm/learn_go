@@ -15,3 +15,12 @@ func SumAll(numberstoSum ...[]int) []int {
 	}
 	return sums
 }
+
+func SumAllTails(numberstoSum ...[]int) []int {
+	var sums []int
+	for _, numbers := range numberstoSum {
+		tail := numbers[1:]
+		sums = append(sums, Sum(tail))
+	}
+	return sums
+}
