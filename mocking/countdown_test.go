@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"reflect"
 	"testing"
 )
 
@@ -13,7 +14,43 @@ func (s *SpySleeper) Sleep() {
 	s.Calls++
 }
 
+type CountdownOperationsSpy struct {
+	Calls []string
+}
+
+const sleep = "sleep"
+const write = "write"
+
+func (s *CountdownOperationsSpy) Sleep() {
+	s.Calls = append(s.Calls, sleep)
+}
+
+func (s *CountdownOperationsSpy) Write(p []byte) (n int, err error) {
+	s.Calls = append(s.Calls, write)
+	return
+}
+
 func TestCountdown(t *testing.T) {
+	t.Run("sleep before every print", func(t *testing.T) {
+		spySleepPrinter := &CountdownOperationsSpy{}
+		Countdown(spySleepPrinter, spySleepPrinter)
+
+		want := []string{
+			sleep,
+			write,
+			sleep,
+			write,
+			sleep,
+			write,
+			sleep,
+			write,
+		}
+
+		if !reflect.DeepEqual(want, spySleepPrinter.Calls) {
+			t.Errorf("wanted calls %v got %v", want, spySleepPrinter.Calls)
+		}
+	})
+
 	buffer := &bytes.Buffer{}
 	spySleeper := &SpySleeper{}
 
