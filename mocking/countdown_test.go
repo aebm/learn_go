@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
+const sleep = "sleep"
+const write = "write"
+
 type CountdownOperationsSpy struct {
 	Calls []string
 }
-
-const sleep = "sleep"
-const write = "write"
 
 func (s *CountdownOperationsSpy) Sleep() {
 	s.Calls = append(s.Calls, sleep)
